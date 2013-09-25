@@ -72,64 +72,49 @@ USAGE
     try:
         # Setup argument parser
         parser = ArgumentParser(description=program_license, formatter_class=RawDescriptionHelpFormatter)
-        parser.add_argument("-r", "--recursive", dest="recurse", action="store_true", help="recurse into subfolders [default: %(default)s]")
-        parser.add_argument("-v", "--verbose", dest="verbose", action="count", help="set verbosity level [default: %(default)s]")
-        parser.add_argument("-i", "--include", dest="include", help="only include paths matching this regex pattern. Note: exclude is given preference over include. [default: %(default)s]", metavar="RE" )
-        parser.add_argument("-e", "--exclude", dest="exclude", help="exclude paths matching this regex pattern. [default: %(default)s]", metavar="RE" )
         parser.add_argument('-V', '--version', action='version', version=program_version_message)
-        parser.add_argument(dest="paths", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="path", nargs='+')
+#         parser.add_argument(dest="paths", help="paths to folder(s) with source file(s) [default: %(default)s]", metavar="path", nargs='+')
         
+        parser.add_argument("-p", "--protocol", dest="protocol", nargs="*",default="DNS",help="the protocol to sniff for, defaults to DNS, which includes all supported protocols")
+        parser.add_argument("snifferAddress", help="the remote address(IP) of the sniffer you want to connect to")
+        parser.add_argument("-H","--historic",action="store_true",help="retrieve earlier collected data?")
         # Process arguments
         args = parser.parse_args()
         
-        paths = args.paths
+#         paths = args.paths
         verbose = args.verbose
-        recurse = args.recurse
-        inpat = args.include
-        expat = args.exclude
+        protocol = args.protocol
+        sniffer  = args.sniffer
+        historic = args.historic
         
         if verbose > 0:
             print("Verbose mode on")
-            if recurse:
-                print("Recursive mode on")
+            if historic:
+                print("Historic mode on")
             else:
-                print("Recursive mode off")
+                print("Historic mode off")
         
-        if inpat and expat and inpat == expat:
-            raise CLIError("include and exclude pattern are equal! Nothing will be processed.")
         
-        for inpath in paths:
+        for p in protocol:
             ### do something with inpath ###
-            print(inpath)
+            print(p)
         return 0
     except KeyboardInterrupt:
         ### handle keyboard interrupt ###
         return 0
-    except Exception e:
-        if DEBUG or TESTRUN:
-            raise(e)
+    except Exception as e:
         indent = len(program_name) * " "
-        sys.stderr.write(program_name + ": " + repr(e) + "\n")
+        sys.stderr.write(program_name + ": " +repr(e) + "\n")
         sys.stderr.write(indent + "  for help use --help")
         return 2
 
 if __name__ == "__main__":
     if DEBUG:
         sys.argv.append("-h")
-        sys.argv.append("-v")
-        sys.argv.append("-r")
+#         sys.argv.append("snifferAddress")
+#         sys.argv.append("127.0.0.1")
+        sys.argv.append("-H")
     if TESTRUN:
         import doctest
         doctest.testmod()
-    if PROFILE:
-        import cProfile
-        import pstats
-        profile_filename = 'UserInterface.Interface_profile.txt'
-        cProfile.run('main()', profile_filename)
-        statsfile = open("profile_stats.txt", "wb")
-        p = pstats.Stats(profile_filename, stream=statsfile)
-        stats = p.strip_dirs().sort_stats('cumulative')
-        stats.print_stats()
-        statsfile.close()
-        sys.exit(0)
     sys.exit(main())

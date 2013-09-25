@@ -5,7 +5,7 @@ Created on 8 sep. 2013
 '''
 import queue
 import DBController
-import filterAgentClient
+import interfaceServer
 import interfaceServer
 
 
@@ -23,7 +23,7 @@ made by the filterAgent client and makes sure that all data is properly stored i
         self.databaseQueue = queue.Queue
         self.interfaceQueue = queue.Queue
         self.snifferQueue   = queue.Queue
-        self.filterAgentClient = filterAgentClient
+        self.interfaceServer = interfaceServer
         self.interfaceServer   = interfaceServer
         #connectionList holds the from IP as key and the to as value
         #both in a string
@@ -44,7 +44,7 @@ made by the filterAgent client and makes sure that all data is properly stored i
             self.connectionList[command.fromIP] = command.toIP
         elif command.command == "close connection":
             close = self.connectionList.pop(command.fromIP)
-            filterAgentClient.close(close)
+            interfaceServer.close(close)
             interfaceServer.succes()
             
         
