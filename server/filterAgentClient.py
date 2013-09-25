@@ -5,11 +5,26 @@ Created on 6 sep. 2013
 '''
 
 import socket
-import sys
+import threading
+import socketserver
+import centralController
 
-HOST,PORT = "localhost", 9997
-data = "  dit is die tekst jo!"
-print(data);
+
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    pass
+
+class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
+
+    def handle(self):
+        data = self.request.recv(1024)
+        
+class filterAgentClient:
+    '''
+    Class that connects with the sniffers and the centralController
+    '''
+    def __init__(self):
+        self.centralController = centralController
+        self.threadedHandler = ThreadedTCPServer(('localhost',12345),ThreadedTCPRequestHandler)
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 sock.sendto(bytes(data + "\n","utf-8"), (HOST, PORT))
