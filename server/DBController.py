@@ -15,71 +15,70 @@ class DBController(object):
     Get(data)
     '''
 
-    def __init__(self,params):
+    def init(self,params):
         '''
         Constructor
         Connect to port 27017
         '''
-        client = MongoClient('localhost', 27017)
-        db = client['NetworkWatchDatabase']
-        collection = db.collection
+        self.client = MongoClient('localhost', 27017)
+        self.db = self.client['NetworkWatchDatabase']
+        self.collection = self.db.collection
         
-    def __CreateDocument__(self, id, param):
+    def CreateDocument(self, id, param):
         '''
         A function that transforms the id and param into a document object
         '''
         document = {ids: param}
         return document
         
-    def __CreateDocuments__(self, ids, params):
+    def CreateDocuments(self, ids, params):
         '''
         A function that transforms the ids and params into a document object
         '''
-        index = 0
-        for param in params:
-            documents.append({ids[index]: param})
-            index += 1
+        for ids,param in params:
+            documents.append({ids: param})
             
         return documents
         
-    def __Get__(self):
+    def Get(self):
         '''
         Getter function that should return the data
         '''
         answer = []
-        for posts in collection.find():
+        for posts in self.collection.find():
             answer.append(posts)
             
         return answer
             
-    def __Get__(self,document):
+    def Get(self,document):
         '''
         Getter function that allows for more then one find
         '''
         answer = []
-        for posts in collection.find():
+        for posts in self.collection.find():
             answer.append(posts)
             
         return answer
         
-    def __Get_One__(self,documentorID):
+    def Get_One(self,documentorID):
         '''
         Getter function that can get specific data
         '''
         return collection.find_one(documentorID)
         
-    def __Set__(self,document):
+    def Set(self,document):
         '''
         Set function that sends data to the server
         Returns the ID code of the post
         '''
         post = document
-        document_id = collection.insert(post)
+        document_id = self.collection.insert(post)
         return document_id
     
-    def __Set__(self,document):
+    def Set(self,document):
         '''
         Bulk set function, to get massive data into the server
         '''
         new_posts = [document,document]
-        collection.insert(newposts)
+        self.collection.insert(newposts)
+        
