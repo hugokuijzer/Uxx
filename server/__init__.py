@@ -15,7 +15,39 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.request.sendall(response)
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
-    pass
+    
+    def MasterThread(self):
+        '''
+        Threaded TCPServer configuration that handles in this fashion:
+        -The main thread enters this function. Listening to a specific port for connections
+        -When a connection is made, it will ask for (or the client/agent will inform) the type of connection
+        -If the type is established. It will assign a new port to this connection. Informing the other which port it is
+        -During sending the answer. This thread will create a new thread that handles listening on that port and process the data/requests
+        '''
+        mainport = 25436
+        s = socket.socket (AF_INET,SOCK_STREAM)
+        s.setsockopt(1,2,1)
+        s.bind("Network Watcher Database Server", mainport) #binding is a tuple
+        s.listen(5)
+        newport = mainport+1
+        while True:
+            try:
+                c,a=s.accept()
+                print("new connection:",a)
+            except KeyBoardInterrupt:
+                print("Shutdown!")
+                break
+            except:
+                print("failure")
+                s.close()
+            else:
+                _type_ = c.strip()
+                s.send(newport)
+                if (_type_ = 'client')
+                    # createthread with the client function that uses the newport
+                elif (_type_ = 'agent')
+                    # createthread with the agent function that uses the newport
+                newport += 1
 
 def client(ip, port, message):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
