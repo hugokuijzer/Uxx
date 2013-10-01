@@ -23,7 +23,18 @@ class DBController(object):
         self.client = MongoClient('localhost', 27017)
         self.db = self.client['NetworkWatchDatabase']
         self.collection = self.db.collection
+    
+    def CreateIPDocument(self, destination, source, version):
+        document = {'destination': destination, 'source': source, 'version':version}
+        return document
+    
+    def CreateTCPDocument(self, destinationport, sourceport, flags):
+        document = {'destination port': destinationport, 'source port':sourceport, 'flags': flags}
+        return document
         
+    def CreateDNSDocument(self):
+        pass
+    
     def CreateDocument(self, id, param):
         '''
         A function that transforms the id and param into a document object
@@ -35,8 +46,8 @@ class DBController(object):
         '''
         A function that transforms the ids and params into a document object
         '''
-        for ids,param in params:
-            documents.append({ids: param})
+        for id,param in params:
+            documents.append({id: param})
             
         return documents
         
@@ -75,10 +86,12 @@ class DBController(object):
         document_id = self.collection.insert(post)
         return document_id
     
-    def Set(self,document):
+    def Set_Documents(self,*documents):
         '''
         Bulk set function, to get massive data into the server
         '''
-        new_posts = [document,document]
+        for document in documents
+            new_posts.append(document)
+            
         self.collection.insert(newposts)
         

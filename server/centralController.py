@@ -55,8 +55,9 @@ made by the filterAgent client and makes sure that all data is properly stored i
         '''
         self.databaseQueue.put(command)
         self.interfaceQueue.put(command)
-        
-class databaseThread(Thread):
+    
+import DBController
+class databaseThread(Thread, DBController DBcontrol):
     '''
     These threads will send all necessary data to the 
     database controller
@@ -69,11 +70,28 @@ class databaseThread(Thread):
             command  = self.queue.get()
             dbReturn = self.process(command)
             self.queue.task_done()
-    def process(self,command):
-        '''
-        Make something usefull out of the command object
-        that can be sent into the database
-        '''
+    def process(self,command,*params):
+        if (command == "Get")
+            return DBcontrol.Get()
+        elif (command == "Get_One")
+            return DBcontrol.Get_One(params)
+        elif (command == "Get_Documents")
+            return DBcontrol.Get(params)
+        elif (command == "Set")
+            return DBcontrol.Set(params)
+        elif (command == "Set_Documents")
+            return DBcontrol.Set_Documents(params)
+        elif (command == "Create_Document")
+            return DBcontrol.Create_Document(params[0],params[1])
+        elif (command == "Create_IPDocument")
+            return DBcontrol.Create_IPDocument(params[0],params[1],params[2])
+        elif (command == "Create_TCPDocument")
+            return DBcontrol.Create_TCPDocument(params[0],params[1],params[2])
+        elif (command == "Create_DNSDocument")
+            return DBcontrol.Create_DNSDocument()
+        #elif (command == "Create_Documents")
+        #   return DBcontrol.Create_Documents()
+        
 class interfaceThread(Thread):
     '''
     These thread will send data back to and from the interface
