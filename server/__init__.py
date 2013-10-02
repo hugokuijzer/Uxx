@@ -18,11 +18,11 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     
     def MasterThread(self):
         '''
-        Threaded TCPServer configuration that handles in this fashion:
-        -The main thread enters this function. Listening to a specific port for connections
+        Threaded TCPServer configuration that handles in self fashion:
+        -The main thread enters self function. Listening to a specific port for connections
         -When a connection is made, it will ask for (or the client/agent will inform) the type of connection
-        -If the type is established. It will assign a new port to this connection. Informing the other which port it is
-        -During sending the answer. This thread will create a new thread that handles listening on that port and process the data/requests
+        -If the type is established. It will assign a new port to self connection. Informing the other which port it is
+        -During sending the answer. self thread will create a new thread that handles listening on that port and process the data/requests
         '''
         mainport = 25436
         s = socket.socket (AF_INET,SOCK_STREAM)
@@ -34,7 +34,7 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             try:
                 c,a=s.accept()
                 print("new connection:",a)
-            except KeyBoardInterrupt:
+            except KeyboardInterrupt:
                 print("Shutdown!")
                 break
             except:
@@ -43,9 +43,9 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             else:
                 _type_ = c.strip()
                 s.send(newport)
-                if (_type_ = 'client')
+                if _type_ == 'client':
                     # createthread with the client function that uses the newport
-                elif (_type_ = 'agent')
+                elif _type_ == 'agent':
                     # createthread with the agent function that uses the newport
                 newport += 1
 

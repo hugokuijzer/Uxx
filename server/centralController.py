@@ -6,7 +6,7 @@ Created on 8 sep. 2013
 import queue
 import DBController
 import interfaceServer
-import interfaceServer
+import threading
 
 
 class centralController:
@@ -30,7 +30,7 @@ made by the filterAgent client and makes sure that all data is properly stored i
         self.connectionList = {}
         self.start()
         
-    def start():
+    def start(self):
         pass
         
     def userCommand(self,command):
@@ -56,14 +56,14 @@ made by the filterAgent client and makes sure that all data is properly stored i
         self.databaseQueue.put(command)
         self.interfaceQueue.put(command)
     
-import DBController
-class databaseThread(Thread, DBController DBcontrol):
+
+class databaseThread(threading.Thread, DBController):
     '''
     These threads will send all necessary data to the 
     database controller
     '''
     def __init__(self,queue):
-        Thread.__init__()
+        threading.Thread.__init__()
         self.queue = queue
     def start(self):
         while True:
@@ -71,42 +71,42 @@ class databaseThread(Thread, DBController DBcontrol):
             dbReturn = self.process(command)
             self.queue.task_done()
     def process(self,command,*params):
-        if (command == "Get")
-            return DBcontrol.Get()
-        elif (command == "Get_One")
-            return DBcontrol.Get_One(params)
-        elif (command == "Get_Documents")
-            return DBcontrol.Get(params)
-        elif (command == "Set")
-            return DBcontrol.Set(params)
-        elif (command == "Set_Documents")
-            return DBcontrol.Set_Documents(params)
-        elif (command == "Create_Document")
-            return DBcontrol.Create_Document(params[0],params[1])
-        elif (command == "Create_IPDocument")
-            return DBcontrol.Create_IPDocument(params[0],params[1],params[2])
-        elif (command == "Create_TCPDocument")
-            return DBcontrol.Create_TCPDocument(params[0],params[1],params[2])
-        elif (command == "Create_DNSDocument")
-            return DBcontrol.Create_DNSDocument()
+        if (command == "Get"):
+            return DBController.Get()
+        elif (command == "Get_One"):
+            return DBController.Get_One(params)
+        elif (command == "Get_Documents"):
+            return DBController.Get(params)
+        elif (command == "Set"):
+            return DBController.Set(params)
+        elif (command == "Set_Documents"):
+            return DBController.Set_Documents(params)
+        elif (command == "Create_Document"):
+            return DBController.Create_Document(params[0],params[1])
+        elif (command == "Create_IPDocument"):
+            return DBController.Create_IPDocument(params[0],params[1],params[2])
+        elif (command == "Create_TCPDocument"):
+            return DBController.Create_TCPDocument(params[0],params[1],params[2])
+        elif (command == "Create_DNSDocument"):
+            return DBController.Create_DNSDocument()
         #elif (command == "Create_Documents")
-        #   return DBcontrol.Create_Documents()
+        #   return DBController.Create_Documents()
         
-class interfaceThread(Thread):
+class interfaceThread(threading.Thread):
     '''
     These thread will send data back to and from the interface
     '''
     def __init__(self,queue):
-        Thread.__init__()
+        threading.Thread.__init__()
         self.queue = queue
     def start(self):
         pass
     def process(self,command):
         pass
     
-class snifferThread(Thread):
+class snifferThread(threading.Thread):
     def __init__(self,queue):
-        Thread.__init__()
+        threading.Thread.__init__()
         self.queue = queue
     def start(self):
         pass

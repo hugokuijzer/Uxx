@@ -4,7 +4,6 @@ Created on 8 sep. 2013
 @author: hugo, Samantha
 '''
 
-import pymongo
 from pymongo import MongoClient
 
 class DBController(object):
@@ -39,7 +38,7 @@ class DBController(object):
         '''
         A function that transforms the id and param into a document object
         '''
-        document = {ids: param}
+        document = {id: param}
         return document
         
     def CreateDocuments(self, ids, params):
@@ -51,16 +50,6 @@ class DBController(object):
             
         return documents
         
-    def Get(self):
-        '''
-        Getter function that should return the data
-        '''
-        answer = []
-        for posts in self.collection.find():
-            answer.append(posts)
-            
-        return answer
-            
     def Get(self,document):
         '''
         Getter function that allows for more then one find
@@ -75,7 +64,7 @@ class DBController(object):
         '''
         Getter function that can get specific data
         '''
-        return collection.find_one(documentorID)
+        return self.collection.find_one(documentorID)
         
     def Set(self,document):
         '''
@@ -90,7 +79,7 @@ class DBController(object):
         '''
         Bulk set function, to get massive data into the server
         '''
-        for document in documents
+        for document in documents:
             new_posts.append(document)
             
         self.collection.insert(newposts)
