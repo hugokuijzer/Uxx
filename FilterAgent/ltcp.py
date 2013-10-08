@@ -55,7 +55,7 @@ def sniff(protocol,duration=5):
         #get data from the packet
         data = str(packet[h_size:])
         packet = dataPacket(str(version),str(ihl),str(ttl),str(protocol),str(s_addr),str(d_addr),str(source_port),str(dest_port),str(sequence),str(acknowledgement));
-        return packet 
+        #return packet 
         print ('Data : ' + data)
 #     print
 class dataPacket:
@@ -74,3 +74,5 @@ class dataPacket:
         self.destPort  = destPort
         self.seqNum    = seqNum
         self.Ack       = Ack
+
+sniff('0')
