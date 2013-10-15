@@ -88,7 +88,7 @@ class databaseThread(threading.Thread, DBController):
         elif (command == "Create_TCPDocument"):
             return DBController.Create_TCPDocument(params[0],params[1],params[2])
         elif (command == "Create_DNSDocument"):
-            return DBController.Create_DNSDocument()
+            return DBController.Create_DNSDocument(params[0],params[1],params[2])
         #elif (command == "Create_Documents")
         #   return DBController.Create_Documents()
         

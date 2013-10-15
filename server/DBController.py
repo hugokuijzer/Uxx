@@ -31,8 +31,8 @@ class DBController(object):
         document = {'destination port': destinationport, 'source port':sourceport, 'flags': flags}
         return document
         
-    def CreateDNSDocument(self):
-        pass
+    def CreateDNSDocument(self,transactionid,flags,resourcerecordname):
+        document = {'transaction id': transactionid, 'flags': flags, 'resourcerecordname':resourcerecordname}
     
     def CreateDocument(self, id, param):
         '''
