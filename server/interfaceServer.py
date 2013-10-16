@@ -7,9 +7,13 @@ Created on 6 sep. 2013
 import socket
 import threading
 import socketserver
-import centralController
+import server.centralController as centralController
 
 def client(ip,port,message):
+    '''
+    Client function to connect to the
+    interface server
+    '''
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((ip,port))
     try:
@@ -40,6 +44,10 @@ class interfaceServer:
         
     def handle(self,command):
         return self.centralController.userCommand(command)
+    
+    def close(self,IP,PORT):
+        client(IP,PORT,'shutdown')
+        self.threadedHandler.shutdown()
 # sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # 
 # sock.sendto(bytes(data + "\n","utf-8"), (HOST, PORT))

@@ -2,6 +2,10 @@ import socket
 import threading
 import socketserver
 import json
+
+#custom modules
+import FilterAgent.network
+
 # from json.encoder import JSONEncoder
 
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
@@ -10,6 +14,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         data = str(self.request.recv(1024), 'ascii')
         data +=  'on port '+ str(port)                
         data = json.dumps(data).upper()
+    
         cur_thread = threading.current_thread()
         response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
         self.request.sendall(response)
@@ -45,7 +50,9 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
                 s.send(newport)
                 if _type_ == 'client':
                     # createthread with the client function that uses the newport
+                    print('client received')
                 elif _type_ == 'agent':
+                    print('agent received')
                     # createthread with the agent function that uses the newport
                 newport += 1
 

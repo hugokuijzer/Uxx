@@ -46,9 +46,9 @@ class DBController(object):
         A function that transforms the ids and params into a document object
         '''
         for id,param in params:
-            documents.append({id: param})
+            self.documents.append({id: param})
             
-        return documents
+#         return documents
         
     def Get(self,document):
         '''
@@ -80,7 +80,7 @@ class DBController(object):
         Bulk set function, to get massive data into the server
         '''
         for document in documents:
-            new_posts.append(document)
+            self.new_posts.append(document)
             
-        self.collection.insert(newposts)
+        self.collection.insert(self.newposts)
         

@@ -4,8 +4,9 @@ Created on 8 sep. 2013
 @author: hugo
 '''
 import queue
-import DBController
-import interfaceServer
+import socket
+import server.DBController.DBController as DBController
+import server.interfaceServer as interfaceServer
 import threading
 
 
@@ -13,9 +14,7 @@ class centralController:
     '''
 Central controller class that links the server request from the user interface to request
 made by the filterAgent client and makes sure that all data is properly stored in the database
-    '''
-
-        
+    ''' 
     def __init__(self):
         '''
         Constructor
@@ -24,7 +23,6 @@ made by the filterAgent client and makes sure that all data is properly stored i
         self.interfaceQueue = queue.Queue
         self.snifferQueue   = queue.Queue
         self.interfaceServer = interfaceServer
-        self.interfaceServer   = interfaceServer
         #connectionList holds the from IP as key and the to as value
         #both in a string
         self.connectionList = {}
@@ -82,13 +80,13 @@ class databaseThread(threading.Thread, DBController):
         elif (command == "Set_Documents"):
             return DBController.Set_Documents(params)
         elif (command == "Create_Document"):
-            return DBController.Create_Document(params[0],params[1])
+            return DBController.CreateDocument(params[0],params[1])
         elif (command == "Create_IPDocument"):
-            return DBController.Create_IPDocument(params[0],params[1],params[2])
+            return DBController.CreateIPDocument(params[0],params[1],params[2])
         elif (command == "Create_TCPDocument"):
-            return DBController.Create_TCPDocument(params[0],params[1],params[2])
+            return DBController.CreateTCPDocument(params[0],params[1],params[2])
         elif (command == "Create_DNSDocument"):
-            return DBController.Create_DNSDocument(params[0],params[1],params[2])
+            return DBController.CreateDNSDocument(params[0],params[1],params[2])
         #elif (command == "Create_Documents")
         #   return DBController.Create_Documents()
         
@@ -100,7 +98,10 @@ class interfaceThread(threading.Thread):
         threading.Thread.__init__()
         self.queue = queue
     def start(self):
-        pass
+        while True:
+            command = self.queue.get()
+            interfaceReturn = self.process(command)
+            self.queue.task_done()
     def process(self,command):
         pass
     
@@ -109,9 +110,18 @@ class snifferThread(threading.Thread):
         threading.Thread.__init__()
         self.queue = queue
     def start(self):
-        pass
-    def process(self):
-        pass
+        while True:
+            command = self.queue.get()
+            snifferReturn = self.process(command)
+            self.queue.task_done()
+    def process(self,command):
+        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM,command)
+        try:
+            sock.connect((command.destIP,command.destPort))
+            sock.sendall(command)
+            response = sock.recv(4096)
+        finally:
+            sock.close()
 def main():
     centralController = centralController()
     centralController.start()

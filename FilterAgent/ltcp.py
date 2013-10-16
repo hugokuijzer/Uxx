@@ -1,7 +1,7 @@
 import socket, sys
 from struct import *
 import time
-import network
+# import FilterAgent.network
 class compiledPacket:
     
     def __init__(self):
