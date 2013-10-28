@@ -29,7 +29,9 @@ made by the filterAgent client and makes sure that all data is properly stored i
         self.start()
         
     def start(self):
-        pass
+        self.snifferthread = snifferThread(self.snifferQueue)
+        self.databasethread = databaseThread(self.databaseQueue)
+        self.interfacethread = interfaceThread(self.interfaceQueue)
         
     def userCommand(self,command):
         '''

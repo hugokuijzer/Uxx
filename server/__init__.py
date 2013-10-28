@@ -46,14 +46,14 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
                 print("failure")
                 s.close()
             else:
-                _type_ = c.strip()
+                _type_ = c.recv(1024).decode('utf8').strip()
                 s.send(newport)
-                if _type_ == 'client':
-                    # createthread with the client function that uses the newport
-                    print('client received')
+                if _type_ == 'interface':
+                    snifferclient = filterAgentClient(c.ip, newport, "new port:" + newport)
+                    print('interface received')
                 elif _type_ == 'agent':
+                    interfaceclient = interfaceServer(c.ip, newport, "new port:" + newport)
                     print('agent received')
-                    # createthread with the agent function that uses the newport
                 newport += 1
 
 def client(ip, port, message):

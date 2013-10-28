@@ -32,7 +32,7 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         self.request.sendall(response)        
 class interfaceServer:
     '''
-    Class that connects with the sniffers and the centralController
+    Class that connects with the sniffer and the centralController
     '''
     def __init__(self):
         self.centralController = centralController()
