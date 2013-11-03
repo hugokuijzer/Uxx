@@ -137,18 +137,25 @@ def sniff(duration=5):
         sys.exit()
      
     cPacket = compiledPacket()
-    print(cPacket)
+    # print(cPacket)
     start = time.time()
     print('start time = '+str(start))
-    packet = s.recvfrom(65565)
+    # packet = s.recvfrom(65565)
     # print(binascii.unhexlify(packet[0]))
     # receive a packet
     while True:
         'started!'
         packet = s.recvfrom(65565)
         #packet string from tuple
+        fullSocketReturn = packet
         packet = packet[0]
-
+        try:
+            d = DNSRecord.parse(packet)
+            print(d)
+        except struct.error as err:
+            continue
+        except RuntimeError as re:
+            continue
         #parse ethernet header
         eth_length = 14
         eth_header = packet[:eth_length]
@@ -213,6 +220,8 @@ def sniff(duration=5):
                 data_size = len(packet) - h_size
                 print ('UDP PACKET ::: Source Port : ' + str(sourcePort) + ' Dest Port : ' + str(destPort) + ' Length : ' 
                 + str(length) + ' Checksum : ' + str(checksum)+' Data size :'+str(data_size))
+                print()
+                # print(packet[h_size:])
                 #get data from the packet
                 data = packet[h_size:]
                 # print ('UDP DATA ENCODED\n')
@@ -221,17 +230,22 @@ def sniff(duration=5):
                 
                 try:
                     # print(data.decode('ascii'))
-                    # d = DNSRecord.parse(binascii.unhexlify(data))
-                    # pprint.pprint(d)
+                    # d = DNSRecord.parse(packet)
+                    # print(d)
                     pprint.pprint(decode_dns_message(packet))
                 except UnicodeDecodeError as err:
-                    print(err)
+                    # print(err)
                     continue
                 except binascii.Error as baerr:
-                    print(baerr)
+                    # print(baerr)
+                    continue
+                except struct.error as strerr:
+                    # print(strerr)
                     continue
                 except TypeError as te:
-                    print(te)
+                    # print(te)
+                    continue
+                except RuntimeError as re:
                     continue
                 packet = udpPacket(sourcePort, destPort, length, data)
                 cPacket.add('UDP', packet)
@@ -241,9 +255,8 @@ def sniff(duration=5):
     #     printw
 
 try:
-	print('starting sniffer!')
-	sniff('0')
+	packet = sniff(0)
 except KeyboardInterrupt as ki:
-	print('Exiting sniffer!')
-	sys.exit()
-
+    print('Exiting sniffer! Collected data :: \n')
+    print(packet)
+    sys.exit()
