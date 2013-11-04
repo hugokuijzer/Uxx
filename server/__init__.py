@@ -48,11 +48,11 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
             else:
                 _type_ = c.recv(1024).decode('utf8').strip()
                 s.send(newport)
-                if _type_ == 'interface':
-                    snifferclient = filterAgentClient(c.ip, newport, "new port:" + newport)
+                if _type_ == 'agent':
+                    snifferclient = filterAgentClient.client(c.ip, newport, "new port:" + newport)
                     print('interface received')
-                elif _type_ == 'agent':
-                    interfaceclient = interfaceServer(c.ip, newport, "new port:" + newport)
+                elif _type_ == 'interface':
+                    interfaceclient = interfaceServer.client(c.ip, newport, "new port:" + newport)
                     print('agent received')
                 newport += 1
 

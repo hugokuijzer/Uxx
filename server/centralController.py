@@ -8,6 +8,7 @@ import socket
 import server.DBController.DBController as DBController
 import server.interfaceServer as interfaceServer
 import threading
+import FilterAgent.ltcp.ltcp as ltcp
 
 
 class centralController:
@@ -70,25 +71,31 @@ class databaseThread(threading.Thread, DBController):
             command  = self.queue.get()
             dbReturn = self.process(command)
             self.queue.task_done()
-    def process(self,command,*params):
+    def process(self,command):
         if (command == "Get"):
             return DBController.Get()
         elif (command == "Get_One"):
-            return DBController.Get_One(params)
+            return DBController.Get_One(command.searchvalue)
         elif (command == "Get_Documents"):
-            return DBController.Get(params)
+            return DBController.Get(command.searchvalue)
+        elif (command == "Return_Packet"):
+            return DBcontroller.ReturnDataPacket(command.searchvalue)
+        '''
         elif (command == "Set"):
             return DBController.Set(params)
         elif (command == "Set_Documents"):
             return DBController.Set_Documents(params)
         elif (command == "Create_Document"):
             return DBController.CreateDocument(params[0],params[1])
+        '''
         elif (command == "Create_IPDocument"):
-            return DBController.CreateIPDocument(params[0],params[1],params[2])
+            return DBController.CreateIPDocument(command.ips.ipVersion,command.ips.ipHLength,command.ips.ttl,command.ips.protocol,command.ips.sourceAddr,command.ips.destAddr,command.ips.sourcePort,command.ips.destPort,command.ips.seqNum,command.ips.Ack)
         elif (command == "Create_TCPDocument"):
-            return DBController.CreateTCPDocument(params[0],params[1],params[2])
+            return DBController.CreateTCPDocument(command.tcps.ipVersion,command.tcps.ipHLength,command.tcps.ttl,command.tcps.protocol,command.tcps.sourceAddr,command.tcps.destAddr,command.tcps.sourcePort,command.tcps.destPort,command.tcps.seqNum,command.tcps.Ack)
         elif (command == "Create_DNSDocument"):
-            return DBController.CreateDNSDocument(params[0],params[1],params[2])
+            return DBController.CreateDNSDocument(command.dns.ipVersion,command.dns.ipHLength,command.dns.ttl,command.dns.protocol,command.dns.sourceAddr,command.dns.destAddr,command.dns.sourcePort,command.dns.destPort,command.dns.seqNum,command.dns.Ack)
+        elif (command == "Create_UDPDocument"):
+            return DBController.CreateUDPDocument(commmand.dns.sourcePort,command.dns.destPort,command.dns.length,command.dns.data)
         #elif (command == "Create_Documents")
         #   return DBController.Create_Documents()
         
