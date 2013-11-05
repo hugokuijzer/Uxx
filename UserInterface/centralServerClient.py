@@ -15,6 +15,11 @@ class centralServerClient(object):
         '''
         self.centralIP   = IP
         self.centralPORT = PORT
+    def connect(self,ip,port):
+        self.centralIP = ip
+        self.centralPORT = port
+        newport = self.client(self.centralIP,self.centralPORT,'client')
+        self.centralPORT = int(newport)
         
     def sendRequest(self,request):
         #parse requestdata
@@ -25,6 +30,7 @@ class centralServerClient(object):
         sock.connect((ip,port))
         try:
             sock.sendall(message)
-            response = sock.recv(4096)
+            response = sock.recv(4096).decode('utf8').strip()
+            return response
         finally:
             sock.close()

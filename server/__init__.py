@@ -107,12 +107,12 @@ if __name__ == "__main__":
             _type_ = c.recv(1024).decode('utf8').strip()
             s.send(newport)
             if _type_ == 'agent':
-                snifferclient[snif] = threading.Thread(target = client, args=(c.ip, newport, "new port:" + newport))
+                snifferclient[snif] = threading.Thread(target = client, args=(c.ip, newport, newport))
                 snifferclient[snif].start()
                 snif+=1
                 print('interface received')
             elif _type_ == 'interface':
-                interfaceclient[intf] = threading.Thread(target = client, args=(c.ip, newport, "new port:" + newport))
+                interfaceclient[intf] = threading.Thread(target = client, args=(c.ip, newport, newport))
                 interfaceclient[snif].start()
                 inft+=1
                 print('agent received')

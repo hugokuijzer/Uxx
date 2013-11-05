@@ -9,7 +9,9 @@ class prettyPrinter(object):
     '''
     Responsible for formatting feeds and creating external reports
     '''
-
+if __name__ == "__main__":
+    
+    
 
     def __init__(self,params):
         '''
@@ -21,11 +23,15 @@ class prettyPrinter(object):
         '''
         the client loop that allows the interface to keep running
         '''
-        loop = True
+        self.loop = True
         
         while loop:
-            command = input()
-            
-            if command = 'shutdown':
+            self.command = input()
+            if self.command = 'shutdown':
+                pass
+            elif self.command = 'connect':
+                ip = input('IP: ')
+                port = input('Port: ')
+                centralServerClient.connect(ip,port)
                 
-                loop = False
+                self.loop = False
