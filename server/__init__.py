@@ -59,16 +59,66 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
 def client(ip, port, message):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((ip, port))
-    try:
-        print("Sent : {}".format(message))
-        sock.sendall(bytes(message, 'ascii'))
-        response = str(sock.recv(1024), 'ascii')
-        print("Received: {}".format(response))
-    finally:
-        sock.close()
+    if type = 'sniffer':
+        try:
+            print("Sent : {}".format(message))
+            sock.sendall(bytes(message, 'ascii'))
+            while True:
+                ThreadedTCPRequestHandler.handle(self)
+                #print("Received: {}".format(response))
+        finally:
+            sock.close()
+    elif type = 'agent':
+        try:
+            print("Sent : {}".format(message))
+            sock.sendall(bytes(message, 'ascii'))
+            while True:
+                ThreadedTCPRequestHandler.handle(self)
+                #print("Received: {}".format(response))
+        finally:
+            sock.close()
+        
 
 if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
+    mainport = 25436
+    s = socket.socket (AF_INET,SOCK_STREAM)
+    s.setsockopt(1,2,1)
+    s.bind("Network Watcher Database Server", mainport) #binding is a tuple
+    s.listen(5)
+    newport = mainport+1
+    snifferclient = []
+    interfaceclient = []
+    snif = 0
+    intf = 0
+    while True:
+        try:
+            c,a=s.accept()
+            print("new connection:",a)
+        except KeyboardInterrupt:
+            print("Shutdown!")
+            for client in snifferclient,interfaceclient:
+                client.join()
+            break
+        except:
+            print("failure")
+            s.close()
+        else:
+            _type_ = c.recv(1024).decode('utf8').strip()
+            s.send(newport)
+            if _type_ == 'agent':
+                snifferclient[snif] = threading.Thread(target = client, args=(c.ip, newport, "new port:" + newport))
+                snifferclient[snif].start()
+                snif+=1
+                print('interface received')
+            elif _type_ == 'interface':
+                interfaceclient[intf] = threading.Thread(target = client, args=(c.ip, newport, "new port:" + newport))
+                interfaceclient[snif].start()
+                inft+=1
+                print('agent received')
+            newport += 1
+    
+    '''
     HOST, PORT = "localhost", 0
 
     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)
@@ -94,3 +144,4 @@ if __name__ == "__main__":
     client(ip, port, "Hello World 2")
     client(ip, port, "Hello World 3")
     server.shutdown()
+    '''
