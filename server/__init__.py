@@ -5,9 +5,11 @@ import json
 
 #custom modules
 import FilterAgent.network
+import interfaceServer.ThreadedTCPRequestHandler as ThreadedTCPRequestHandler
+import interfaceServer.interfaceServer as interfaceServer
 
 # from json.encoder import JSONEncoder
-
+    '''
 class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
@@ -18,17 +20,18 @@ class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
         cur_thread = threading.current_thread()
         response = bytes("{}: {}".format(cur_thread.name, data), 'ascii')
         self.request.sendall(response)
-
+    '''
+    '''
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     
     def MasterThread(self):
-        '''
+        
         Threaded TCPServer configuration that handles in self fashion:
         -The main thread enters self function. Listening to a specific port for connections
         -When a connection is made, it will ask for (or the client/agent will inform) the type of connection
         -If the type is established. It will assign a new port to self connection. Informing the other which port it is
         -During sending the answer. self thread will create a new thread that handles listening on that port and process the data/requests
-        '''
+        
         self.mainport = 25436
         s = socket.socket (AF_INET,SOCK_STREAM)
         s.setsockopt(1,2,1)
@@ -55,32 +58,24 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
                     interfaceclient = interfaceServer.client(c.ip, newport, "new port:" + newport)
                     print('agent received')
                 newport += 1
-
+    '''
+    
 def client(ip, port, message):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((ip, port))
-    if type = 'sniffer':
-        try:
-            print("Sent : {}".format(message))
-            sock.sendall(bytes(message, 'ascii'))
-            while True:
-                ThreadedTCPRequestHandler.handle(self)
-                #print("Received: {}".format(response))
-        finally:
-            sock.close()
-    elif type = 'agent':
-        try:
-            print("Sent : {}".format(message))
-            sock.sendall(bytes(message, 'ascii'))
-            while True:
-                ThreadedTCPRequestHandler.handle(self)
-                #print("Received: {}".format(response))
-        finally:
-            sock.close()
-        
+    try:
+        print("Sent : {}".format(message))
+        sock.sendall(bytes(message, 'ascii'))
+        while True:
+            ThreadedTCPRequestHandler.handle(self)
+            #print("Received: {}".format(response))
+    finally:
+        sock.close()
+    
 
 if __name__ == "__main__":
-    # Port 0 means to select an arbitrary unused port
+    # Port 0 means to select an arbitrary unused portz
+    interfaceserver = interfaceServer()
     self.mainport = 25436
     s = socket.socket (AF_INET,SOCK_STREAM)
     s.setsockopt(1,2,1)

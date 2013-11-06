@@ -48,6 +48,18 @@ class interfaceServer:
     def close(self,IP,PORT):
         client(IP,PORT,'shutdown')
         self.threadedHandler.shutdown()
+
+'''
+if __name__ == "__main__":
+    HOST, PORT = "localhost", 25436
+
+    # Create the server, binding to localhost on port 9999
+    server = SocketServer.TCPServer((HOST, PORT), ThreadedTCPRequestHandler)
+
+    # Activate the server; this will keep running until you
+    # interrupt the program with Ctrl-C
+    server.serve_forever()
+'''    
 # sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # 
 # sock.sendto(bytes(data + "\n","utf-8"), (HOST, PORT))
