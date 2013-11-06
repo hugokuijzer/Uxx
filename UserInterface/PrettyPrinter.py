@@ -30,20 +30,27 @@ if __name__ == "__main__":
             #Overview(self.packethistory)
             self.command = input()
             if self.command = 'shutdown':
+                self.loop = False
+                self.sendcommand.name = "Shutdown"
+                self.serverconnection.sendRequest(self.sendcommand)
                 pass
             elif self.command = 'show_all_packets':
                 Overview(self.packethistory)
             elif self.command = 'show_incoming_packets':
                 self.serverconnection.
                 Overview()
+            elif self.command = 'request_datapacket':
+                self.sendcommand.searchvalue = input ('Which keyword you want to look for?')
+                self.sendcommand.name = "Get_One"
+                self.serverconnection.sendRequest(self.sendcommand)
             elif self.command = 'help':
                 print("shutdown"+"\n"+"show_all_packets"+"/n"+"show_incoming_packets"+"/n"+"connect")
             elif self.command = 'connect':
                 ip = input('IP? ')
                 port = input('Port? (default mainport = 25436)')
                 self.serverconnection.connect(ip,port)
+    
                 
-                self.loop = False
                 
     def Overview(self,*datapackets):
         for data in datapackets:

@@ -72,29 +72,29 @@ class databaseThread(threading.Thread, DBController):
             dbReturn = self.process(command)
             self.queue.task_done()
     def process(self,command):
-        if (command == "Get"):
+        if (command.name == "Get"):
             return DBController.Get()
-        elif (command == "Get_One"):
+        elif (command.name == "Get_One"):
             return DBController.Get_One(command.searchvalue)
-        elif (command == "Get_Documents"):
+        elif (command.name == "Get_Documents"):
             return DBController.Get(command.searchvalue)
-        elif (command == "Return_Packet"):
+        elif (command.name == "Return_Packet"):
             return DBcontroller.ReturnDataPacket(command.searchvalue)
         '''
-        elif (command == "Set"):
+        elif (command.name == "Set"):
             return DBController.Set(params)
-        elif (command == "Set_Documents"):
+        elif (command.name == "Set_Documents"):
             return DBController.Set_Documents(params)
-        elif (command == "Create_Document"):
+        elif (command.name == "Create_Document"):
             return DBController.CreateDocument(params[0],params[1])
         '''
-        elif (command == "Create_IPDocument"):
+        elif (command.name == "Create_IPDocument"):
             return DBController.CreateIPDocument(command.ips.ipVersion,command.ips.ipHLength,command.ips.ttl,command.ips.protocol,command.ips.sourceAddr,command.ips.destAddr,command.ips.sourcePort,command.ips.destPort,command.ips.seqNum,command.ips.Ack)
-        elif (command == "Create_TCPDocument"):
+        elif (command.name == "Create_TCPDocument"):
             return DBController.CreateTCPDocument(command.tcps.ipVersion,command.tcps.ipHLength,command.tcps.ttl,command.tcps.protocol,command.tcps.sourceAddr,command.tcps.destAddr,command.tcps.sourcePort,command.tcps.destPort,command.tcps.seqNum,command.tcps.Ack)
-        elif (command == "Create_DNSDocument"):
+        elif (command.name == "Create_DNSDocument"):
             return DBController.CreateDNSDocument(command.dns.ipVersion,command.dns.ipHLength,command.dns.ttl,command.dns.protocol,command.dns.sourceAddr,command.dns.destAddr,command.dns.sourcePort,command.dns.destPort,command.dns.seqNum,command.dns.Ack)
-        elif (command == "Create_UDPDocument"):
+        elif (command.name == "Create_UDPDocument"):
             return DBController.CreateUDPDocument(commmand.dns.sourcePort,command.dns.destPort,command.dns.length,command.dns.data)
         #elif (command == "Create_Documents")
         #   return DBController.Create_Documents()
