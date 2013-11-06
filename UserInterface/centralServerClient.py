@@ -15,6 +15,7 @@ class centralServerClient(object):
         '''
         self.centralIP   = IP
         self.centralPORT = PORT
+        self.streamincomingpackets = False
     def connect(self,ip,port):
         self.centralIP = ip
         self.centralPORT = port
@@ -34,3 +35,5 @@ class centralServerClient(object):
             return response
         finally:
             sock.close()
+            
+    

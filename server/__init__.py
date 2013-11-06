@@ -29,7 +29,7 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         -If the type is established. It will assign a new port to self connection. Informing the other which port it is
         -During sending the answer. self thread will create a new thread that handles listening on that port and process the data/requests
         '''
-        mainport = 25436
+        self.mainport = 25436
         s = socket.socket (AF_INET,SOCK_STREAM)
         s.setsockopt(1,2,1)
         s.bind("Network Watcher Database Server", mainport) #binding is a tuple
@@ -81,7 +81,7 @@ def client(ip, port, message):
 
 if __name__ == "__main__":
     # Port 0 means to select an arbitrary unused port
-    mainport = 25436
+    self.mainport = 25436
     s = socket.socket (AF_INET,SOCK_STREAM)
     s.setsockopt(1,2,1)
     s.bind("Network Watcher Database Server", mainport) #binding is a tuple
